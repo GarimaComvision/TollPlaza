@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ReportSummaryController : UIViewController <UITableViewDelegate, UITableViewDataSource, NSURLSessionDelegate>
+@interface ReportSummaryController : UIViewController <UITableViewDelegate, UITableViewDataSource, NSURLSessionDelegate,NSURLConnectionDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *reporttableview;
 
 

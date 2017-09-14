@@ -1,12 +1,17 @@
 //
 //  AppDelegate.m
-//  TollPlaza
+//  MVAutocompletePlaceTextFieldDemo
 //
-//  Created by Harendra on 12/24/16.
-//  Copyright © 2016 Harendra. All rights reserved.
+//  Created by Mrugrajsinh Vansadia on 10/06/15.
+//  Copyright (c) 2015 MV. All rights reserved.
 //
 
 #import "AppDelegate.h"
+#import <GoogleMaps/GoogleMaps.h>
+#import <GooglePlaces/GooglePlaces.h>
+#import "AppSinglton.h"
+#import "AppUtils.h"
+@import GoogleMaps;
 
 @interface AppDelegate ()
 
@@ -14,9 +19,21 @@
 
 @implementation AppDelegate
 
-
+//AIzaSyCZRk-lK0_G1wBOphfHYSIcCiKZ5n48Y0w
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [GMSServices provideAPIKey:@"AIzaSyDoeOQSUhdYRC7IApvMbVJUcsJ6yZIoWAE"];
+    [GMSPlacesClient provideAPIKey:@"AIzaSyDoeOQSUhdYRC7IApvMbVJUcsJ6yZIoWAE"];
+   
+    
+    //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [AppUtils getVehiclesList];    
+    [[AppSinglton sharedManager] startLocationTracking];
+    
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
+        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+    }
+    
     return YES;
 }
 
@@ -40,6 +57,37 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+    if (state == UIApplicationStateBackground || state == UIApplicationStateInactive)
+    {
+        //Do checking here.
+    }
+    //  UIApplicationState state = [application applicationState];
+    else if (state == UIApplicationStateActive) {
+        /*  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reminder"
+         message:notification.alertBody
+         delegate:self cancelButtonTitle:@"OK"
+         otherButtonTitles:nil];
+         [alert show];*/
+    }
+    
+    // Request to reload table view data
+    
+    // Set icon badge number to zero
+    application.applicationIconBadgeNumber = 0;
+}
+@end
+
+@implementation NSMutableURLRequest (NSURLRequestWithIgnoreSSL)
+
++ (BOOL)allowsAnyHTTPSCertificateForHost:(NSString *)host
+{
+    return YES;
 }
 
 @end
